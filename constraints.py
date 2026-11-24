@@ -51,13 +51,14 @@ def objective(x, N):
     return -volume_per_turn(x, N)
 
 
-def g_vector(x, N):
+def g_vector(x, N, volume=None):
     """All inequality constraints g >= 0, normalised to O(1)."""
     Ro, rho, P, a = x
     lam = lam_of(x)
+    Q = flow_rate(x, N) if volume is None else volume * rpm_of(Ro) / 60.0
     L = H / np.sin(np.radians(a))
     return np.array([
-        flow_rate(x, N) / Q_REQ - 1.0,                    # g1: Q >= Qreq
+        Q / Q_REQ - 1.0,                    # g1: Q >= Qreq
         (LAM_MAX - lam),                                  # g2: P tan(a) <= 2 pi Ro
         (lam - LAM_MIN),                                  # g3: P >= 0.05*2 pi Ro/tan(a)
         (L_MAX - L * np.cos(np.radians(a))) / L_MAX,      # g4: footprint
