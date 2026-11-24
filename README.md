@@ -107,6 +107,3 @@ is a numerical design bound in the current implementation, not a Rorres limit.
 - Model lead: inspect geometric derivation, assumptions and engineering bounds.
 - Optimization lead: validation tables, SLSQP settings, design results, diagnostics.
 - Analysis lead: extend comparisons, interpret convergence/performance and assemble figures.
-
-The source and generated outputs were developed with Codex assistance. Group
-members should review them and include the course-required GenAI disclosure.
