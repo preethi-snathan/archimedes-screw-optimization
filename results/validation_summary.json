@@ -1,0 +1,34 @@
+{
+  "passed": true,
+  "benchmark": 0.17031686290635198,
+  "reference": 0.1703,
+  "benchmark_abs_error": 1.6862906351972073e-05,
+  "tolerances": {
+    "parameters": 0.0005,
+    "objective": 5e-05,
+    "grid": 1e-07
+  },
+  "seed": 1,
+  "n_starts": 8,
+  "checks": {
+    "benchmark": true,
+    "table_N1": true,
+    "table_N2": true,
+    "table_N3": true,
+    "table_N4": true,
+    "table_N5": true,
+    "table_N6": true,
+    "table_N7": true,
+    "table_N8": true,
+    "grid_benchmark": true,
+    "grid_optimum_N1": true,
+    "grid_optimum_N2": true,
+    "grid_optimum_N3": true,
+    "grid_optimum_N4": true,
+    "grid_optimum_N5": true,
+    "grid_optimum_N6": true,
+    "grid_optimum_N7": true,
+    "grid_optimum_N8": true
+  },
+  "source": "https://www.cs.drexel.edu/~crorres/screw/screw.pdf, Table 1, p. 76"
+}

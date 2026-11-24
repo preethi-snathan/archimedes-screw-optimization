@@ -1,0 +1,58 @@
+{
+  "timestamp_utc": "2026-11-24T18:10:01.337555+00:00",
+  "python": "3.10.7 (v3.10.7:6cc6b13308, Sep  5 2022, 14:02:52) [Clang 13.0.0 (clang-1300.0.29.30)]",
+  "numpy": "2.2.6",
+  "scipy": "1.15.3",
+  "platform": "macOS-26.6.2-arm64-arm-64bit",
+  "matplotlib": "3.10.8",
+  "seed": 0,
+  "n_starts": 20,
+  "source_sha256": {
+    "optimize.py": "1f9a5b8fd1834f33d6222d0784270765fe324a305e0f6a479ad081b3a78f31c6",
+    "plots.py": "480a5a99855da7ae163d6b65a2f099063a31623f3470d1a9d1b47034752599d9",
+    "experiments.py": "e18672a90d4505891b8e2c8ac20c199e29c7ef38afa222f261be54c718988988",
+    "nu.py": "3502e74f573b1d64e4e926fe625dc34fec88e905a0727dbbad7775135943edc1",
+    "constraints.py": "c96601cef97b32b613ca4b3112c6d86e04ba3b1be16ef1214018cf9c8dc4b26e",
+    "run_all.py": "0039e8deffac7e275256c2e0358eac7082098499ed75c7bb3a34aaaa672095e8",
+    "validate_nu.py": "c7d25ecb3b1a93f09f5443e24e569c46194ea9170aef98e59a82903df42e1aa9"
+  },
+  "comparisons": false,
+  "n_de": 0,
+  "solver_options": {
+    "maxiter": 300,
+    "ftol": 1e-10,
+    "eps": 1e-06
+  },
+  "feasibility_tolerance": 1e-06,
+  "n_phi": 2001,
+  "bounds": [
+    [
+      0.2,
+      1.0
+    ],
+    [
+      0.2,
+      0.7
+    ],
+    [
+      0.05,
+      6.0
+    ],
+    [
+      20.0,
+      40.0
+    ]
+  ],
+  "H": 3.0,
+  "Q_REQ": 0.1,
+  "L_MAX": 5.0,
+  "lam_bounds": [
+    0.05,
+    1.0
+  ],
+  "git_commit": "544fdd6ef05ffa346c947dfb064cbdb9ecae2b13",
+  "git_status": "M README.md\n M constraints.py\n M experiments.py\n M optimize.py\n M plots.py\n M run_all.py\n M validate_nu.py\n?? .gitignore\n?? figures/\n?? requirements.txt\n?? results/\n?? tests/",
+  "timing_scope": "solver plus final diagnostics; excludes start generation and report postprocessing",
+  "history": "negative best feasible physical VT at objective evaluations; null until feasible",
+  "model_calls_scope": "all nu calls inside solver and final diagnostics; excludes start generation and report postprocessing"
+}

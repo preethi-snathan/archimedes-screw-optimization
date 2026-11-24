@@ -1,14 +1,31 @@
-"""One command to reproduce everything:  python run_all.py"""
-import validate_nu, experiments, plots
+"""Run validation, SLSQP experiments, sensitivity and figures from the repo root."""
+import argparse
+from pathlib import Path
+import validate_nu
+import experiments
 
-if __name__ == "__main__":
-    print("=== 1. Validation against Rorres (2000) ===")
-    v = validate_nu.nu(8, 0.5, 3 / 8)
-    print(f"nu(8,1/2,3/8) = {v:.5f} (reference 0.1703)")
-    print("\n=== 2. Experiments ===")
-    rows = experiments.run()
-    experiments.summarise(rows)
-    print("\n=== 3. Figures ===")
-    rows, hist = plots.load()
-    plots.fig_nu_surface(); plots.fig_best_vs_N(rows); plots.fig_spread(rows); plots.fig_convergence(hist)
-    print("Done. See results/ and figures/.")
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--starts', type=int, default=20)
+    parser.add_argument('--seed', type=int, default=0)
+    parser.add_argument('--comparisons', action='store_true',
+                        help='Also run penalised Nelder-Mead and differential evolution')
+    parser.add_argument('--no-plots', action='store_true')
+    args = parser.parse_args()
+    validate_nu.run()  # Raises on failure: never proceed with an invalid model.
+    rows = experiments.run(n_starts=args.starts, seed=args.seed, comparisons=args.comparisons)
+    experiments.sensitivity(rows)
+    if not args.no_plots:
+        import plots
+        Path('figures').mkdir(exist_ok=True)
+        rows, hist = plots.load()
+        plots.fig_nu_surface()
+        plots.fig_best_vs_N(rows)
+        plots.fig_spread(rows)
+        plots.fig_convergence(hist)
+    print('Done. See results/ for validation, designs, diagnostics and sensitivity.')
+
+
+if __name__ == '__main__':
+    main()
