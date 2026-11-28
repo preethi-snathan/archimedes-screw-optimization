@@ -1,0 +1,124 @@
+{
+  "N": 4,
+  "n_phi": 8001,
+  "objective": {
+    "points": [
+      {
+        "x": [
+          0.8,
+          0.53524,
+          1.9756453815225394,
+          32.0
+        ],
+        "VT": 1.0596214537224105,
+        "negative_VT": -1.0596214537224105,
+        "residuals": [
+          5.454899846823399,
+          0.7544,
+          0.1956,
+          0.03979928257536969
+        ],
+        "violation": 0.0,
+        "feasible": true
+      },
+      {
+        "x": [
+          0.9,
+          0.53524,
+          2.222601054212857,
+          32.0
+        ],
+        "VT": 1.5087188276633539,
+        "negative_VT": -1.5087188276633539,
+        "residuals": [
+          7.496604318864083,
+          0.7544,
+          0.1956,
+          0.03979928257536969
+        ],
+        "violation": 0.0,
+        "feasible": true
+      },
+      {
+        "x": [
+          1.0,
+          0.53524,
+          2.4695567269031744,
+          32.0
+        ],
+        "VT": 2.0695731518015825,
+        "negative_VT": -2.0695731518015825,
+        "residuals": [
+          9.864578242717048,
+          0.7544,
+          0.1956,
+          0.03979928257536969
+        ],
+        "violation": 0.0,
+        "feasible": true
+      }
+    ],
+    "midpoint_Jensen_gap": 0.05587847509864252,
+    "explanation": "For minimization f=-VT, convexity requires f(mid)<=mean(f(endpoints)). The positive gap violates that inequality. Analytically f=-k*Ro^3 on this affine feasible segment, k>0."
+  },
+  "feasible_region": {
+    "points": [
+      {
+        "x": [
+          0.9530920930730385,
+          0.21395028460045595,
+          5.8642775620518535,
+          31.18544662785248
+        ],
+        "VT": 0.20801917412692905,
+        "negative_VT": -0.20801917412692905,
+        "residuals": [
+          0.12757528184755884,
+          0.40727656588391903,
+          0.5427234341160809,
+          0.008714085669518923
+        ],
+        "violation": 0.0,
+        "feasible": true
+      },
+      {
+        "x": [
+          0.6796601832954408,
+          0.3871586332606203,
+          3.5807137179578805,
+          32.39153481496019
+        ],
+        "VT": 0.1107557788004678,
+        "negative_VT": -0.1107557788004678,
+        "residuals": [
+          -0.24785091199884923,
+          0.46805180522847,
+          0.48194819477153,
+          0.05424245554050646
+        ],
+        "violation": 0.24785091199884923,
+        "feasible": false
+      },
+      {
+        "x": [
+          0.4062282735178429,
+          0.5603669819207846,
+          1.2971498738639076,
+          33.5976230020679
+        ],
+        "VT": 0.10610921403029917,
+        "negative_VT": -0.10610921403029917,
+        "residuals": [
+          0.015558837508946599,
+          0.6623788551837011,
+          0.2876211448162989,
+          0.09684611468575799
+        ],
+        "violation": 0.0,
+        "feasible": true
+      }
+    ],
+    "explanation": "Both endpoints satisfy the constraints; their midpoint violates minimum flow. This counterexample shows the continuous N=4 feasible region is nonconvex under the implemented model."
+  },
+  "limitations": "Nonconvexity does not establish multiple local optima or prove that the best computed point is global. N is discrete and is enumerated separately."
+}

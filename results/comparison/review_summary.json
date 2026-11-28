@@ -1,0 +1,10 @@
+{
+  "integration_cases": 25,
+  "integration_passed": true,
+  "integration_max_abs_difference": 1.8041922789091558e-08,
+  "reduced_cases": 4,
+  "reduced_all_agree": true,
+  "relaxed_pitch_cases": 84,
+  "relaxed_pitch_all_agree": true,
+  "scope": "Same ideal geometric model; independent quadrature does not test leakage, inlet filling or finite-length end effects. Finite reduced DE does not certify global optimality."
+}

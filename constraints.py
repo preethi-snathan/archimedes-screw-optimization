@@ -18,8 +18,8 @@ LAM_MIN = 0.05   # practical minimum pitch  (constraint 3)
 LAM_MAX = 1.0    # buckets must form        (constraint 2)
 
 # ---- simple bounds ---------------------------------------------------------
-# P range follows from lam in [LAM_MIN, LAM_MAX]; we give a generous box and let
-# the nonlinear constraints cut it down.
+# The 6 m pitch cap is an additional design assumption, not implied by the
+# normalized-pitch constraints. review_checks.py tests relaxing this cap.
 BOUNDS = [(0.2, 1.0),     # Ro  [m]
           (0.2, 0.7),     # rho
           (0.05, 6.0),    # P   [m]
@@ -74,7 +74,12 @@ def scipy_constraints(N):
 
 def max_violation(x, N):
     """Largest constraint violation (0 if feasible) including simple bounds."""
-    v = max(0.0, float(-g_vector(x, N).min()))
+    if not np.all(np.isfinite(x)):
+        return float('inf')
+    g = g_vector(x, N)
+    if not np.all(np.isfinite(g)):
+        return float('inf')
+    v = max(0.0, float(-g.min()))
     for xi, (lo, hi) in zip(x, BOUNDS):
         v = max(v, lo - xi, xi - hi)
     return max(0.0, v)

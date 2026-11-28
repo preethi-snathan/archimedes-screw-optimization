@@ -72,6 +72,12 @@ def _radial_integral(a, c, W, rho):
 
 def nu(N, rho, lam, n_phi=2001):
     """Volumetric capacity factor. Returns 0 if no water-holding bucket forms."""
+    if not isinstance(N, (int, np.integer)) or isinstance(N, (bool, np.bool_)) or N < 1:
+        raise ValueError('N must be a positive integer')
+    if not isinstance(n_phi, (int, np.integer)) or n_phi < 3 or n_phi % 2 == 0:
+        raise ValueError('Simpson integration requires an odd n_phi >= 3')
+    if not np.isfinite(rho) or not np.isfinite(lam):
+        raise ValueError('rho and lam must be finite')
     if not (0.0 < rho < 1.0) or lam <= 0.0 or lam >= 1.0:
         return 0.0
     W = TWO_PI * lam / N                      # channel width in v

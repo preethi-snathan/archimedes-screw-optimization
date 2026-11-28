@@ -11,6 +11,8 @@ import constraints as C
 
 FEAS_TOL = 1e-6
 SLSQP_OPTIONS = dict(maxiter=300, ftol=1e-10, eps=1e-6)
+NM_OPTIONS = dict(maxiter=4000, maxfev=6000, xatol=1e-7, fatol=1e-10)
+DE_OPTIONS = dict(popsize=15, maxiter=150, tol=1e-8, polish=False)
 
 
 def solve_two_var(N, x0, method="SLSQP", n_phi=2001, eps=1e-6):
@@ -40,6 +42,7 @@ class Evaluator:
         self.N, self.n_phi = N, n_phi
         self.model_calls = self.nfev = self.ncev = 0
         self.history = []
+        self.history_model_calls = []
         self.best = None
 
     def volume(self, x):
@@ -59,6 +62,7 @@ class Evaluator:
             self.best = v if self.best is None else max(self.best, v)
         # Negative sign retained for compatibility with plots.py.
         self.history.append(None if self.best is None else -self.best)
+        self.history_model_calls.append(self.model_calls)
         return -v + penalty*np.sum(np.minimum(g, 0.0)**2)
 
 
@@ -79,6 +83,7 @@ def _pack(N, res, ev, t0, x0=None):
                 feasible=violation <= FEAS_TOL, success=bool(res.success),
                 status=int(getattr(res, 'status', 0 if res.success else -1)),
                 message=str(res.message), nit=int(res.nit), history=ev.history,
+                history_model_calls=ev.history_model_calls,
                 residuals=g.tolist())
 
 
@@ -95,8 +100,7 @@ def solve_nelder_mead(N, x0, mu=1e5):
     ev = Evaluator(N)
     t0 = time.perf_counter()
     res = minimize(lambda x: ev.objective(x, penalty=mu), x0, method="Nelder-Mead",
-                   bounds=C.BOUNDS, options=dict(maxiter=4000, maxfev=6000,
-                                                 xatol=1e-7, fatol=1e-10))
+                   bounds=C.BOUNDS, options=NM_OPTIONS)
     return _pack(N, res, ev, t0, x0)
 
 
@@ -106,7 +110,7 @@ def solve_de(N, seed=0, popsize=15, maxiter=150):
     t0 = time.perf_counter()
     res = differential_evolution(ev.objective, C.BOUNDS,
         constraints=NonlinearConstraint(ev.constraints, 0., np.inf), seed=seed,
-        popsize=popsize, maxiter=maxiter, tol=1e-8, polish=False)
+        popsize=popsize, maxiter=maxiter, tol=DE_OPTIONS['tol'], polish=False)
     return _pack(N, res, ev, t0)
 
 
