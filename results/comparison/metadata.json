@@ -1,0 +1,126 @@
+{
+  "timestamp_utc": "2026-11-28T01:42:07.818285+00:00",
+  "python": "3.10.7 (v3.10.7:6cc6b13308, Sep  5 2022, 14:02:52) [Clang 13.0.0 (clang-1300.0.29.30)]",
+  "numpy": "2.2.6",
+  "scipy": "1.15.3",
+  "platform": "macOS-26.6.2-arm64-arm-64bit",
+  "matplotlib": "3.10.8",
+  "seed": 0,
+  "n_starts": 20,
+  "source_sha256": {
+    "optimize.py": "2ab076bf986c581ef20e5cbb27e2e55d087371a137714fbc3849ca347a3ff2d7",
+    "review_checks.py": "cdd66f98ad6efacae58eb7c245d6edad792d6ec3f31d6456f657dd53e14d115c",
+    "analysis.py": "237b7a55d9ee7a61caa5be6c6711d89b90aaf6f35c793564bb6434e798a60044",
+    "comparison_plots.py": "d066e5b9aad6934c800ebc4b1df4beffa06998304a1cc47cccd0cad2c162e090",
+    "run_comparisons.py": "ae80ca5fea5b1a29255624685d7dee01d8bec22393f70baea6ee4479d873a9dd",
+    "plots.py": "480a5a99855da7ae163d6b65a2f099063a31623f3470d1a9d1b47034752599d9",
+    "experiments.py": "efa2985fb96330aa6f93fdcbd9c0842484b7af88ee947274e1a35f013ef55150",
+    "nu.py": "de4fd8155bfa4d95dd69ca2dd6434f82cb99d2326fe99319395621a7bc87017d",
+    "constraints.py": "c82fbb7d74e4c257fcd9c8726725c95eadffc7fca8a9243e84884715489a7f8a",
+    "run_all.py": "0039e8deffac7e275256c2e0358eac7082098499ed75c7bb3a34aaaa672095e8",
+    "validate_nu.py": "c7d25ecb3b1a93f09f5443e24e569c46194ea9170aef98e59a82903df42e1aa9"
+  },
+  "comparisons": true,
+  "n_de": 3,
+  "solver_options": {
+    "maxiter": 300,
+    "ftol": 1e-10,
+    "eps": 1e-06
+  },
+  "feasibility_tolerance": 1e-06,
+  "nelder_mead_options": {
+    "maxiter": 4000,
+    "maxfev": 6000,
+    "xatol": 1e-07,
+    "fatol": 1e-10,
+    "penalty_mu": 10000000.0
+  },
+  "differential_evolution_options": {
+    "popsize": 15,
+    "maxiter": 150,
+    "tol": 1e-08,
+    "polish": false,
+    "strategy": "best1bin",
+    "init": "latinhypercube",
+    "mutation": [
+      0.5,
+      1.0
+    ],
+    "recombination": 0.7,
+    "updating": "immediate"
+  },
+  "starting_points": "paired feasible starts for SLSQP/NM; DE uses its own seeded population",
+  "n_phi": 2001,
+  "bounds": [
+    [
+      0.2,
+      1.0
+    ],
+    [
+      0.2,
+      0.7
+    ],
+    [
+      0.05,
+      6.0
+    ],
+    [
+      20.0,
+      40.0
+    ]
+  ],
+  "H": 3.0,
+  "Q_REQ": 0.1,
+  "L_MAX": 5.0,
+  "lam_bounds": [
+    0.05,
+    1.0
+  ],
+  "git_commit": "b2f5062aa6ddcc5b1755579ab5e78afbcbd1dc99",
+  "git_status": "M README.md\n M constraints.py\n M experiments.py\n M nu.py\n M optimize.py\n M tests/test_workflow.py\n?? analysis.py\n?? comparison_plots.py\n?? figures/comparison/\n?? results/comparison/\n?? review_checks.py\n?? run_comparisons.py",
+  "timing_scope": "solver plus final diagnostics; excludes start generation and report postprocessing",
+  "history": "negative best feasible physical VT at objective evaluations; null until feasible",
+  "model_calls_scope": "all nu calls inside solver and final diagnostics; excludes start generation and report postprocessing",
+  "penalty_sensitivity": {
+    "coefficients": [
+      100000.0,
+      10000000.0,
+      1000000000.0
+    ],
+    "starts": "first three paired starts per N",
+    "run_count": 36
+  },
+  "numerical_sensitivity": {
+    "n_phi": [
+      1001,
+      2001,
+      4001
+    ],
+    "eps": [
+      1e-05,
+      1e-06,
+      1e-07
+    ],
+    "starts": "original start of the best baseline SLSQP run per N"
+  },
+  "final_grid_check": {
+    "n_phi": 8001,
+    "runs": 172
+  },
+  "model_review": {
+    "integration_cases": 25,
+    "integration_passed": true,
+    "integration_max_abs_difference": 1.8041922789091558e-08,
+    "reduced_cases": 4,
+    "reduced_all_agree": true,
+    "relaxed_pitch_cases": 84,
+    "relaxed_pitch_all_agree": true,
+    "scope": "Same ideal geometric model; independent quadrature does not test leakage, inlet filling or finite-length end effects. Finite reduced DE does not certify global optimality."
+  },
+  "nm_polish_diagnostics": {
+    "runs": 9,
+    "selection": "converged feasible NM endpoints more than 1e-5 relative below the best SLSQP value for that N",
+    "timing": "separate diagnostic; excluded from main comparison"
+  },
+  "nm_penalty_rationale": "Pilot checks at N=1 and N=4 found 1e5 infeasible and 1e7 feasible under the common 1e-6 threshold. Full study uses fixed 1e7; sweep reported separately."
+}

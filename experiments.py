@@ -46,36 +46,41 @@ def result_row(r, name, i, seed):
 
 
 def run(n_starts=N_STARTS, n_de=N_DE_SEEDS, seed=0, verbose=True,
-        comparisons=False, out=OUT):
+        comparisons=False, out=OUT, nm_mu=1e5, de_maxiter=150):
     if n_starts < 1 or n_de < 0:
         raise ValueError('Require positive starts and nonnegative DE runs')
     out = Path(out)
     out.mkdir(parents=True, exist_ok=True)
     rng = np.random.default_rng(seed)
-    rows, hist = [], {}
+    rows, hist, history_calls = [], {}, {}
     for N in (1,2,3,4):
         starts = [O.feasible_start(N, rng) for _ in range(n_starts)]
         solvers = [('SLSQP', O.solve_slsqp)]
         if comparisons:
-            solvers.append(('NelderMead', O.solve_nelder_mead))
+            solvers.append(('NelderMead', lambda n,x: O.solve_nelder_mead(n,x,mu=nm_mu)))
         for i,x0 in enumerate(starts):
             for name,solver in solvers:
                 r = solver(N,x0)
                 rows.append(result_row(r,name,i,seed))
                 hist[f'{name}_N{N}_run{i}'] = r['history']
+                history_calls[f'{name}_N{N}_run{i}'] = r['history_model_calls']
                 if i == 0:
                     hist[f'{name}_N{N}'] = r['history']
+                    history_calls[f'{name}_N{N}'] = r['history_model_calls']
         if comparisons:
             for i in range(n_de):
-                r = O.solve_de(N,seed=seed+i)
+                r = O.solve_de(N,seed=seed+i,maxiter=de_maxiter)
                 rows.append(result_row(r,'DiffEvolution',i,seed+i))
                 hist[f'DiffEvolution_N{N}_run{i}'] = r['history']
+                history_calls[f'DiffEvolution_N{N}_run{i}'] = r['history_model_calls']
                 if i == 0:
                     hist[f'DiffEvolution_N{N}'] = r['history']
+                    history_calls[f'DiffEvolution_N{N}'] = r['history_model_calls']
         if verbose:
             print(f'N={N} finished', flush=True)
     write_csv(out/'results.csv', rows)
     (out/'histories.json').write_text(json.dumps(hist, allow_nan=False)+'\n')
+    (out/'history_model_calls.json').write_text(json.dumps(history_calls)+'\n')
     summaries, best = summarise(rows, verbose=verbose)
     write_csv(out/'method_summary.csv',summaries)
     write_csv(out/'best_designs.csv',best)
@@ -86,6 +91,11 @@ def run(n_starts=N_STARTS, n_de=N_DE_SEEDS, seed=0, verbose=True,
                        for p in Path(__file__).resolve().parent.glob("*.py")},
         comparisons=comparisons, n_de=n_de if comparisons else 0,
         solver_options=O.SLSQP_OPTIONS, feasibility_tolerance=O.FEAS_TOL,
+        nelder_mead_options={**O.NM_OPTIONS, 'penalty_mu': nm_mu} if comparisons else None,
+        differential_evolution_options={**O.DE_OPTIONS, 'maxiter': de_maxiter,
+            'strategy':'best1bin', 'init':'latinhypercube', 'mutation':[0.5,1.0],
+            'recombination':0.7, 'updating':'immediate'} if comparisons else None,
+        starting_points='paired feasible starts for SLSQP/NM; DE uses its own seeded population',
         n_phi=2001, bounds=C.BOUNDS, H=C.H, Q_REQ=C.Q_REQ, L_MAX=C.L_MAX,
         lam_bounds=[C.LAM_MIN,C.LAM_MAX],
         git_commit=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
@@ -110,6 +120,10 @@ def summarise(rows, verbose=True):
             median_converged_VT=float(np.median(vals)) if vals else '',
             std_converged_VT=float(np.std(vals)) if vals else '',
             best_feasible_VT=max(r['obj'] for r in feas) if feas else '',
+            min_violation=min(r['violation'] for r in rs),
+            max_violation=max(r['violation'] for r in rs),
+            mean_nfev=float(np.mean([r['nfev'] for r in rs])),
+            mean_nit=float(np.mean([r['nit'] for r in rs])) if 'nit' in rs[0] else '',
             mean_model_calls=float(np.mean([r['model_calls'] for r in rs])),
             mean_seconds=float(np.mean([r['time'] for r in rs])))
         summaries.append(summary)
